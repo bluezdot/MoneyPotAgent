@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { BRAND_COLOR } from '@/lib/constants'
 
 interface ProgressBadgeProps {
   icon: LucideIcon
@@ -15,7 +16,7 @@ export function ProgressBadge({
   icon: Icon,
   label,
   value,
-  color = '#c8ff00',
+  color = BRAND_COLOR,
   delay = 0,
   className,
 }: ProgressBadgeProps) {

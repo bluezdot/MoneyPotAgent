@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
+
 interface ConfettiProps {
   count?: number
   colors?: string[]
