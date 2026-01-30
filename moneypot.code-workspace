@@ -3,6 +3,9 @@
         {
             "path": ".",
         },
+        {
+            "path": "frontend",
+        }
     ],
     "settings": {
         "editor.tabSize": 4,
