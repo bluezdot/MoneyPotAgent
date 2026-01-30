@@ -258,7 +258,7 @@ def upgrade() -> None:
         sa.Column("role", message_role, nullable=False),
         sa.Column("content", sa.Text, nullable=False),
         sa.Column("message_type", message_type, default="text"),
-        sa.Column("metadata", postgresql.JSON, nullable=True),
+        sa.Column("extra_data", postgresql.JSON, nullable=True),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),

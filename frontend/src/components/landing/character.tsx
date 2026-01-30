@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
 
 export type CharacterEmotion = 'happy' | 'curious' | 'proud' | 'thoughtful' | 'excited'
 export type CharacterName = 'coach' | 'user'
@@ -8,24 +7,14 @@ interface CharacterProps {
   name: CharacterName
   emotion: CharacterEmotion
   size?: number
-  className?: string
 }
 
-const emotionStyles: Record<CharacterEmotion, { eyes: string; mouth: string; blush?: boolean }> = {
-  happy: { eyes: 'normal', mouth: 'smile', blush: true },
-  curious: { eyes: 'wide', mouth: 'slight-smile', blush: false },
-  proud: { eyes: 'closed-happy', mouth: 'big-smile', blush: true },
-  thoughtful: { eyes: 'looking-up', mouth: 'neutral', blush: false },
-  excited: { eyes: 'sparkle', mouth: 'big-smile', blush: true },
-}
-
-export function Character({ name, emotion, size = 120, className }: CharacterProps) {
-  const style = emotionStyles[emotion]
+export function Character({ name, emotion, size = 120 }: CharacterProps) {
   const isCoach = name === 'coach'
 
   return (
     <motion.div
-      className={cn('character-container', className)}
+      className="character-container"
       initial={{ scale: 0, rotate: -10 }}
       animate={{ scale: 1, rotate: 0 }}
       transition={{
@@ -88,7 +77,7 @@ export function Character({ name, emotion, size = 120, className }: CharacterPro
         {/* Floating sparkles for excited emotion */}
         {emotion === 'excited' && (
           <>
-            <motioncircle
+            <motion.circle
               cx="15"
               cy="20"
               r="3"
@@ -103,7 +92,7 @@ export function Character({ name, emotion, size = 120, className }: CharacterPro
                 delay: 0,
               }}
             />
-            <motioncircle
+            <motion.circle
               cx="85"
               cy="15"
               r="2"
@@ -118,7 +107,7 @@ export function Character({ name, emotion, size = 120, className }: CharacterPro
                 delay: 0.3,
               }}
             />
-            <motioncircle
+            <motion.circle
               cx="80"
               cy="85"
               r="2.5"

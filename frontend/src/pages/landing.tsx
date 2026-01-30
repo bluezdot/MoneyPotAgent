@@ -1,564 +1,358 @@
-import { useNavigate } from 'react-router'
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Check, Star, ChevronRight, PiggyBank, Target, TrendingUp, MessageCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router'
+import { Button } from '@/components/ui/button'
+import { NarrativeHero } from '@/components/landing/narrative-hero'
+import { FeatureShowcase } from '@/components/landing/feature-showcase'
+import { HowItWorks } from '@/components/landing/how-it-works'
+import { ProgressBadge, AchievementBadge } from '@/components/landing/progress-badge'
+import { Confetti, ConfettiBurst } from '@/components/ui/confetti'
+import {
+  PiggyBank,
+  MessageCircle,
+  Target,
+  TrendingUp,
+  Users,
+  Star,
+  CheckCircle2,
+  Sparkles,
+} from 'lucide-react'
+import { motion } from 'framer-motion'
 
-const features = [
-    {
-        icon: PiggyBank,
-        title: "Smart Pot System",
-        description: "Automatically allocate your income across needs, wants, savings & more.",
-    },
-    {
-        icon: Target,
-        title: "Goal Tracking",
-        description: "Set financial goals with milestones and track your progress visually.",
-    },
-    {
-        icon: TrendingUp,
-        title: "Spending Insights",
-        description: "Understand where your money goes with intelligent categorization.",
-    },
-    {
-        icon: MessageCircle,
-        title: "AI Coach",
-        description: "Get personalized advice and see the impact of every financial decision.",
-    },
+const stats = [
+  { icon: Users, label: 'Happy Users', value: '50K+' },
+  { icon: TrendingUp, label: 'Savings Rate', value: '89%' },
+  { icon: Target, label: 'Goals Achieved', value: '12M+' },
+  { icon: Star, label: 'User Rating', value: '4.9/5' },
 ]
 
 const testimonials = [
-    {
-        quote: "Finally saved my first $10k emergency fund. The AI coach kept me accountable!",
-        author: "Sarah Chen",
-        role: "Software Engineer",
-        avatar: "SC",
-    },
-    {
-        quote: "The pot system changed how I think about money. Budgeting actually makes sense now.",
-        author: "Marcus Webb",
-        role: "Freelance Designer",
-        avatar: "MW",
-    },
-    {
-        quote: "Saved for my dream vacation in 8 months. The milestone tracking kept me motivated.",
-        author: "Elena Ruiz",
-        role: "Marketing Manager",
-        avatar: "ER",
-    },
+  {
+    quote: 'Finally saved my first $10k emergency fund! The AI coach kept me accountable and made it feel like a game.',
+    author: 'Sarah Chen',
+    role: 'Software Engineer',
+    avatar: 'SC',
+  },
+  {
+    quote: "The pot system changed how I think about money. Budgeting actually makes sense now, and I don't feel restricted.",
+    author: 'Marcus Webb',
+    role: 'Freelance Designer',
+    avatar: 'MW',
+  },
+  {
+    quote: 'Saved for my dream vacation in 8 months. The milestone tracking kept me motivated every step of the way!',
+    author: 'Elena Ruiz',
+    role: 'Marketing Manager',
+    avatar: 'ER',
+  },
 ]
 
-const pricingTiers = [
-    {
-        name: "Free",
-        price: "0",
-        description: "Get started today",
-        features: ["Unlimited pots", "3 active goals", "Basic AI insights", "Expense tracking"],
-        cta: "Start Free",
-        highlighted: false,
-    },
-    {
-        name: "Pro",
-        price: "9",
-        description: "For serious savers",
-        features: ["Unlimited goals", "Full AI coaching", "Impact analysis", "Trade-off advisor", "Priority support", "Export data"],
-        cta: "Start Trial",
-        highlighted: true,
-    },
-    {
-        name: "Family",
-        price: "19",
-        description: "For households",
-        features: ["Everything in Pro", "Up to 5 members", "Shared goals", "Family insights", "Custom categories", "Dedicated coach"],
-        cta: "Contact Sales",
-        highlighted: false,
-    },
+const achievements = [
+  {
+    icon: Target,
+    title: 'First Goal Set',
+    description: 'Create your first financial goal and start your journey to financial freedom.',
+  },
+  {
+    icon: PiggyBank,
+    title: 'Pot Master',
+    description: 'Set up all 5 money pots and automate your savings like a pro.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Savings Streak',
+    description: 'Maintain positive savings for 3 consecutive months.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'Coach Buddy',
+    description: 'Have 10 conversations with your AI money coach.',
+  },
 ]
 
-const stats = [
-    { value: "50K+", label: "Active Users" },
-    { value: "$12M+", label: "Goals Achieved" },
-    { value: "89%", label: "Savings Rate" },
-    { value: "4.9/5", label: "User Rating" },
-]
+function Navigation() {
+  return (
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <motion.div
+            className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center"
+            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+            transition={{ duration: 0.5 }}
+          >
+            <PiggyBank className="w-5 h-5 text-black" />
+          </motion.div>
+          <span className="font-bold text-lg">MoneyPot</span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-6 text-sm">
+          <a
+            href="#features"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            How It Works
+          </a>
+          <a
+            href="#testimonials"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Stories
+          </a>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link to="/onboarding/welcome">
+            <Button
+              size="sm"
+              className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold"
+            >
+              Get Started Free
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </motion.nav>
+  )
+}
+
+function StatsSection() {
+  return (
+    <section className="py-16 bg-muted/30 border-y border-border">
+      <div className="container max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {stats.map((stat, index) => (
+            <ProgressBadge
+              key={stat.label}
+              icon={stat.icon}
+              label={stat.label}
+              value={stat.value}
+              delay={index * 0.1}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function TestimonialsSection() {
+  return (
+    <section id="testimonials" className="py-20 md:py-32 bg-background">
+      <div className="container max-w-6xl mx-auto px-4">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Loved by
+            <span className="text-[#c8ff00]"> thousands</span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Real stories from real people who transformed their relationship with money
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={testimonial.author}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div className="h-full bg-card border-2 border-border rounded-2xl p-6 hover:border-[#c8ff00]/30 transition-colors">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-[#c8ff00] text-[#c8ff00]"
+                    />
+                  ))}
+                </div>
+                <p className="text-lg mb-6 leading-relaxed">
+                  "{testimonial.quote}"
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c8ff00] to-[#96ff00] flex items-center justify-center text-black font-semibold text-sm">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <p className="font-medium">{testimonial.author}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function AchievementsPreview() {
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="container max-w-6xl mx-auto px-4">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c8ff00]/10 border border-[#c8ff00]/20 mb-4">
+            <Sparkles className="w-4 h-4 text-[#c8ff00]" />
+            <span className="text-sm font-medium">Gamified Savings</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Achievements that
+            <span className="text-[#c8ff00]"> motivate</span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Earn badges, hit milestones, and celebrate your financial wins with your coach
+          </p>
+        </motion.div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {achievements.map((achievement, index) => (
+            <AchievementBadge
+              key={achievement.title}
+              {...achievement}
+              delay={index * 0.1}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CTASection() {
+  const [showConfetti, setShowConfetti] = useState(false)
+
+  return (
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      {showConfetti && <Confetti count={60} />}
+
+      <div className="container max-w-4xl mx-auto px-4 relative z-10">
+        <motion.div
+          className="relative rounded-3xl bg-gradient-to-br from-[#c8ff00]/10 via-background to-[#c8ff00]/5 border-2 border-[#c8ff00]/20 p-8 md:p-16 text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          {/* Confetti burst on hover */}
+          <ConfettiBurst x={20} y={30} size={60} colors={['#c8ff00', '#8b5cf6']} />
+          <ConfettiBurst x={80} y={20} size={80} colors={['#3b82f6', '#10b981']} />
+          <ConfettiBurst x={50} y={70} size={70} colors={['#f59e0b', '#ef4444']} />
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Ready to meet your
+              <span className="text-[#c8ff00]"> money coach</span>?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+              Join 50,000+ people already building better financial habits. Start free
+              today, no credit card required.
+            </p>
+
+            <Link to="/onboarding/welcome">
+              <Button
+                size="lg"
+                className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
+                onMouseEnter={() => setShowConfetti(true)}
+              >
+                Start Free Today
+                <CheckCircle2 className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+              </Button>
+            </Link>
+
+            <p className="text-sm text-muted-foreground mt-4">
+              Takes 2 minutes • No credit card required • Cancel anytime
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="py-12 bg-muted/30 border-t border-border">
+      <div className="container max-w-6xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center">
+              <PiggyBank className="w-5 h-5 text-black" />
+            </div>
+            <span className="font-bold">MoneyPot</span>
+          </div>
+
+          <p className="text-sm text-muted-foreground">
+            © 2025 MoneyPot. Your AI-powered financial health coach.
+          </p>
+
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <Link to="#" className="hover:text-foreground transition-colors">
+              Privacy
+            </Link>
+            <Link to="#" className="hover:text-foreground transition-colors">
+              Terms
+            </Link>
+            <Link to="#" className="hover:text-foreground transition-colors">
+              Contact
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
 
 function Landing() {
-    const navigate = useNavigate()
+  const [mounted, setMounted] = useState(false)
 
-    const handleGetStarted = () => {
-        navigate('/onboarding/welcome')
-    }
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-    return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-            {/* Grain overlay */}
-            <div
-                className="fixed inset-0 pointer-events-none z-50 opacity-[0.015]"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-                }}
-            />
+  if (!mounted) {
+    return null
+  }
 
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-[#0a0a0a]/80 border-b border-white/5">
-                <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center">
-                            <PiggyBank className="w-5 h-5 text-black" />
-                        </div>
-                        <span className="font-clash font-bold text-xl tracking-tight">MoneyPot</span>
-                    </div>
-                    <div className="hidden md:flex items-center gap-8 text-sm text-white/60">
-                        <a href="#features" className="hover:text-white transition-colors">Features</a>
-                        <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-                        <a href="#testimonials" className="hover:text-white transition-colors">Customers</a>
-                        <a href="#" className="hover:text-white transition-colors">Docs</a>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/5">
-                            Sign In
-                        </Button>
-                        <Button className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold" onClick={handleGetStarted}>
-                            Get Started
-                        </Button>
-                    </div>
-                </div>
-            </nav>
-
-            {/* Hero Section */}
-            <section className="relative pt-32 pb-24 px-6">
-                {/* Background elements */}
-                <div className="absolute top-20 right-0 w-150 h-150 bg-[#c8ff00]/10 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-100 h-100 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
-
-                <div className="max-w-7xl mx-auto relative">
-                    {/* Announcement banner */}
-                    <div className="flex justify-center mb-8 animate-fade-in">
-                        <a
-                            href="#"
-                            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-white/70 hover:border-[#c8ff00]/50 hover:bg-[#c8ff00]/5 transition-all"
-                        >
-                            <span className="px-2 py-0.5 rounded-full bg-[#c8ff00] text-black text-xs font-semibold">NEW</span>
-                            Introducing AI Financial Coach
-                            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                        </a>
-                    </div>
-
-                    {/* Main headline */}
-                    <div className="text-center max-w-5xl mx-auto">
-                        <h1
-                            className="font-clash font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] mb-6 animate-fade-in-up"
-                            style={{ animationDelay: '100ms' }}
-                        >
-                            Your AI-powered
-                            <br />
-                            <span className="text-[#c8ff00]">money coach</span>
-                        </h1>
-
-                        <p
-                            className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up"
-                            style={{ animationDelay: '200ms' }}
-                        >
-                            Smart pot allocation, goal tracking, and personalized AI coaching.
-                            See the impact of every financial decision before you make it.
-                        </p>
-
-                        <div
-                            className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
-                            style={{ animationDelay: '300ms' }}
-                        >
-                            <Button
-                                size="lg"
-                                className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
-                                onClick={handleGetStarted}
-                            >
-                                Start Free Today
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-white/20 text-white hover:bg-white/5 h-14 px-8 text-base"
-                            >
-                                See How It Works
-                            </Button>
-                        </div>
-
-                        {/* Social proof */}
-                        <div
-                            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/40 animate-fade-in-up"
-                            style={{ animationDelay: '400ms' }}
-                        >
-                            <div className="flex items-center gap-2">
-                                <div className="flex -space-x-2">
-                                    {['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'].map((color, i) => (
-                                        <div
-                                            key={i}
-                                            className="w-8 h-8 rounded-full border-2 border-[#0a0a0a]"
-                                            style={{ backgroundColor: color }}
-                                        />
-                                    ))}
-                                </div>
-                                <span>50,000+ users</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className="w-4 h-4 fill-[#c8ff00] text-[#c8ff00]" />
-                                ))}
-                                <span className="ml-1">4.9/5 rating</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Hero visual */}
-                    <div
-                        className="mt-20 relative animate-fade-in-up"
-                        style={{ animationDelay: '500ms' }}
-                    >
-                        <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-transparent to-transparent z-10 pointer-events-none" />
-                        <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden shadow-2xl shadow-black/50">
-                            {/* Browser chrome */}
-                            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
-                                <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                                    <div className="w-3 h-3 rounded-full bg-white/20" />
-                                </div>
-                                <div className="flex-1 flex justify-center">
-                                    <div className="px-4 py-1 rounded-md bg-white/5 text-xs text-white/40">
-                                        app.moneypot.ai/dashboard
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Mock dashboard */}
-                            <div className="p-6 min-h-100 bg-linear-to-br from-[#111] to-[#0a0a0a]">
-                                <div className="grid grid-cols-4 gap-4 mb-6">
-                                    {stats.map((stat, i) => (
-                                        <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/5">
-                                            <div className="text-2xl font-bold text-[#c8ff00]">{stat.value}</div>
-                                            <div className="text-sm text-white/40">{stat.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="col-span-2 h-48 rounded-xl bg-white/5 border border-white/5 p-4">
-                                        <div className="text-sm text-white/40 mb-4">Performance</div>
-                                        <div className="flex items-end gap-2 h-28">
-                                            {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88].map((h, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="flex-1 rounded-t bg-linear-to-t from-[#c8ff00]/50 to-[#c8ff00]"
-                                                    style={{ height: `${h}%` }}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="h-48 rounded-xl bg-white/5 border border-white/5 p-4">
-                                        <div className="text-sm text-white/40 mb-4">Activity</div>
-                                        <div className="space-y-2">
-                                            {[...Array(5)].map((_, i) => (
-                                                <div key={i} className="flex items-center gap-2">
-                                                    <div className="w-2 h-2 rounded-full bg-[#c8ff00]" />
-                                                    <div className="flex-1 h-2 rounded bg-white/10" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Logos Section */}
-            <section className="py-16 border-y border-white/5">
-                <div className="max-w-7xl mx-auto px-6">
-                    <p className="text-center text-sm text-white/30 mb-8 uppercase tracking-widest">
-                        Featured in
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-40">
-                        {['Forbes', 'TechCrunch', 'Product Hunt', 'Bloomberg', 'CNBC', 'WSJ'].map((brand) => (
-                            <span key={brand} className="font-clash font-semibold text-xl tracking-tight">
-                                {brand}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Features Section */}
-            <section id="features" className="py-24 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="inline-block px-3 py-1 rounded-full bg-[#c8ff00]/10 text-[#c8ff00] text-sm font-medium mb-4">
-                            Features
-                        </span>
-                        <h2 className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight mb-4">
-                            Everything you need
-                        </h2>
-                        <p className="text-lg text-white/50 max-w-2xl mx-auto">
-                            Powerful features that scale with your team. No compromises.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {features.map((feature, i) => (
-                            <div
-                                key={i}
-                                className="group relative p-8 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/4 hover:border-[#c8ff00]/20 transition-all duration-300"
-                            >
-                                <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#c8ff00]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="relative">
-                                    <div className="w-12 h-12 rounded-xl bg-[#c8ff00]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <feature.icon className="w-6 h-6 text-[#c8ff00]" />
-                                    </div>
-                                    <h3 className="font-clash font-semibold text-xl mb-2">{feature.title}</h3>
-                                    <p className="text-white/50">{feature.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Bento Grid Feature Highlight */}
-            <section className="py-24 px-6 bg-linear-to-b from-transparent via-white/2 to-transparent">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {/* Large feature card */}
-                        <div className="md:col-span-2 md:row-span-2 relative p-8 rounded-2xl border border-white/10 bg-linear-to-br from-[#c8ff00]/10 to-transparent overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-75 h-75 bg-[#c8ff00]/20 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-700" />
-                            <div className="relative z-10">
-                                <h3 className="font-clash font-bold text-3xl mb-4">AI Financial Coach</h3>
-                                <p className="text-lg text-white/60 mb-8 max-w-md">
-                                    Get personalized advice and see the real impact of every spending decision.
-                                </p>
-                                <div className="p-6 rounded-xl bg-black/40 backdrop-blur border border-white/10">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="w-8 h-8 rounded-lg bg-[#c8ff00] flex items-center justify-center">
-                                            <MessageCircle className="w-4 h-4 text-black" />
-                                        </div>
-                                        <span className="text-sm font-medium">Analyzing impact...</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        {['Checking pot balances', 'Calculating goal impact', 'Generating recommendation'].map((step, i) => (
-                                            <div key={i} className="flex items-center gap-2 text-sm text-white/40">
-                                                <Check className="w-4 h-4 text-[#c8ff00]" />
-                                                {step}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Smaller cards */}
-                        <div className="p-6 rounded-2xl border border-white/10 bg-white/2">
-                            <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
-                                <Target className="w-5 h-5 text-purple-400" />
-                            </div>
-                            <h4 className="font-clash font-semibold text-lg mb-2">Visual Milestones</h4>
-                            <p className="text-sm text-white/40">Break big goals into achievable steps with progress tracking.</p>
-                        </div>
-
-                        <div className="p-6 rounded-2xl border border-white/10 bg-white/2">
-                            <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
-                                <PiggyBank className="w-5 h-5 text-blue-400" />
-                            </div>
-                            <h4 className="font-clash font-semibold text-lg mb-2">Smart Allocation</h4>
-                            <p className="text-sm text-white/40">Auto-distribute income across customizable money pots.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
-            <section id="testimonials" className="py-24 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="inline-block px-3 py-1 rounded-full bg-[#c8ff00]/10 text-[#c8ff00] text-sm font-medium mb-4">
-                            Testimonials
-                        </span>
-                        <h2 className="font-clash font-bold text-4xl sm:text-5xl tracking-tight">
-                            Loved by teams everywhere
-                        </h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {testimonials.map((testimonial, i) => (
-                            <div
-                                key={i}
-                                className="p-6 rounded-2xl border border-white/5 bg-white/2 hover:border-white/10 transition-colors"
-                            >
-                                <div className="flex items-center gap-1 mb-4">
-                                    {[...Array(5)].map((_, j) => (
-                                        <Star key={j} className="w-4 h-4 fill-[#c8ff00] text-[#c8ff00]" />
-                                    ))}
-                                </div>
-                                <p className="text-lg mb-6 text-white/80">"{testimonial.quote}"</p>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#c8ff00] to-[#96ff00] flex items-center justify-center text-black font-semibold text-sm">
-                                        {testimonial.avatar}
-                                    </div>
-                                    <div>
-                                        <div className="font-medium">{testimonial.author}</div>
-                                        <div className="text-sm text-white/40">{testimonial.role}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Pricing Section */}
-            <section id="pricing" className="py-24 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="inline-block px-3 py-1 rounded-full bg-[#c8ff00]/10 text-[#c8ff00] text-sm font-medium mb-4">
-                            Pricing
-                        </span>
-                        <h2 className="font-clash font-bold text-4xl sm:text-5xl tracking-tight mb-4">
-                            Simple, transparent pricing
-                        </h2>
-                        <p className="text-lg text-white/50">
-                            Start free, upgrade when you're ready.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                        {pricingTiers.map((tier, i) => (
-                            <div
-                                key={i}
-                                className={cn(
-                                    "relative p-8 rounded-2xl border transition-all",
-                                    tier.highlighted
-                                        ? "border-[#c8ff00]/50 bg-[#c8ff00]/5 scale-105"
-                                        : "border-white/10 bg-white/2 hover:border-white/20"
-                                )}
-                            >
-                                {tier.highlighted && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#c8ff00] text-black text-xs font-semibold">
-                                        Most Popular
-                                    </div>
-                                )}
-                                <div className="mb-6">
-                                    <h3 className="font-clash font-semibold text-xl mb-1">{tier.name}</h3>
-                                    <p className="text-sm text-white/40">{tier.description}</p>
-                                </div>
-                                <div className="mb-6">
-                                    <span className="font-clash font-bold text-5xl">
-                                        {tier.price === "Custom" ? "" : "$"}{tier.price}
-                                    </span>
-                                    {tier.price !== "Custom" && (
-                                        <span className="text-white/40">/month</span>
-                                    )}
-                                </div>
-                                <ul className="space-y-3 mb-8">
-                                    {tier.features.map((feature, j) => (
-                                        <li key={j} className="flex items-center gap-2 text-sm text-white/60">
-                                            <Check className="w-4 h-4 text-[#c8ff00]" />
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Button
-                                    className={cn(
-                                        "w-full",
-                                        tier.highlighted
-                                            ? "bg-[#c8ff00] text-black hover:bg-[#d4ff33]"
-                                            : "bg-white/10 text-white hover:bg-white/20"
-                                    )}
-                                >
-                                    {tier.cta}
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-24 px-6">
-                <div className="max-w-4xl mx-auto relative">
-                    <div className="absolute inset-0 bg-linear-to-r from-[#c8ff00]/20 via-purple-500/20 to-[#c8ff00]/20 rounded-3xl blur-3xl" />
-                    <div className="relative p-12 rounded-3xl border border-white/10 bg-[#111] text-center">
-                        <h2 className="font-clash font-bold text-4xl sm:text-5xl tracking-tight mb-4">
-                            Ready to take control?
-                        </h2>
-                        <p className="text-lg text-white/50 mb-8 max-w-xl mx-auto">
-                            Join 50,000+ users already building wealth with MoneyPot.
-                            Start free, no credit card required.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Button
-                                size="lg"
-                                className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
-                                onClick={handleGetStarted}
-                            >
-                                Get Started Free
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="ghost"
-                                className="text-white/70 hover:text-white h-14 px-8 text-base"
-                            >
-                                Learn More
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="py-16 px-6 border-t border-white/5">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-5 gap-12 mb-12">
-                        <div className="md:col-span-2">
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center">
-                                    <PiggyBank className="w-5 h-5 text-black" />
-                                </div>
-                                <span className="font-clash font-bold text-xl tracking-tight">MoneyPot</span>
-                            </div>
-                            <p className="text-sm text-white/40 max-w-xs">
-                                Your AI-powered financial health coach. Smart budgeting made simple.
-                            </p>
-                        </div>
-                        {[
-                            { title: 'Product', links: ['Features', 'Pricing', 'Changelog', 'Roadmap'] },
-                            { title: 'Company', links: ['About', 'Blog', 'Careers', 'Press'] },
-                            { title: 'Resources', links: ['Documentation', 'API Reference', 'Status', 'Support'] },
-                        ].map((section, i) => (
-                            <div key={i}>
-                                <h4 className="font-semibold mb-4">{section.title}</h4>
-                                <ul className="space-y-2">
-                                    {section.links.map((link, j) => (
-                                        <li key={j}>
-                                            <a href="#" className="text-sm text-white/40 hover:text-white transition-colors">
-                                                {link}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-                        <p className="text-sm text-white/30">
-                            © 2025 MoneyPot. All rights reserved.
-                        </p>
-                        <div className="flex items-center gap-6 text-sm text-white/30">
-                            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                            <a href="#" className="hover:text-white transition-colors">Terms</a>
-                            <a href="#" className="hover:text-white transition-colors">Cookies</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    )
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <NarrativeHero />
+      <StatsSection />
+      <FeatureShowcase />
+      <HowItWorks />
+      <AchievementsPreview />
+      <TestimonialsSection />
+      <CTASection />
+      <Footer />
+    </div>
+  )
 }
 
 export default Landing
