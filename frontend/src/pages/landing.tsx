@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { NarrativeHero } from '@/components/landing/narrative-hero'
@@ -330,18 +330,13 @@ function Footer() {
 }
 
 function Landing() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
-
   return (
-    <div className="min-h-screen bg-background">
+    <motion.div 
+      className="min-h-screen bg-background overflow-x-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <Navigation />
       <NarrativeHero />
       <StatsSection />
@@ -351,7 +346,7 @@ function Landing() {
       <TestimonialsSection />
       <CTASection />
       <Footer />
-    </div>
+    </motion.div>
   )
 }
 

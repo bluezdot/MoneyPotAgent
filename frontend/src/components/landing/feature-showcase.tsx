@@ -1,9 +1,9 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Sparkles, Target, TrendingUp, Shield, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 interface Feature {
   id: string
@@ -56,18 +56,9 @@ interface FeatureShowcaseProps {
 }
 
 export function FeatureShowcase({ className }: FeatureShowcaseProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8])
-
   return (
     <section
-      ref={containerRef}
+      id="features"
       className={cn(
         'relative py-20 md:py-32 bg-background overflow-hidden',
         className
@@ -75,27 +66,60 @@ export function FeatureShowcase({ className }: FeatureShowcaseProps) {
     >
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-[#c8ff00]/5 via-transparent to-transparent rounded-full blur-3xl" />
+        <motion.div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-[#c8ff00]/5 via-transparent to-transparent rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
       </div>
 
       <div className="container max-w-6xl mx-auto px-4 relative z-10">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
-          style={{ opacity, scale }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
         >
-          <Badge className="mb-4 bg-[#c8ff00]/10 text-[#c8ff00] border-[#c8ff00]/20">
-            <Zap className="w-3 h-3 mr-1" />
-            Everything you need
-          </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            <Badge className="mb-4 bg-[#c8ff00]/10 text-[#c8ff00] border-[#c8ff00]/20">
+              <Zap className="w-3 h-3 mr-1" />
+              Everything you need
+            </Badge>
+          </motion.div>
+          <motion.h2 
+            className="text-3xl md:text-5xl font-bold mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             Features that make
             <span className="text-[#c8ff00]"> saving fun</span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             No more boring spreadsheets. MoneyPot makes financial management
             interactive, visual, and actually enjoyable.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Feature Cards Grid */}
@@ -107,17 +131,30 @@ export function FeatureShowcase({ className }: FeatureShowcaseProps) {
 
         {/* Highlight banner */}
         <motion.div
-          className="relative rounded-2xl bg-gradient-to-r from-[#c8ff00]/10 via-[#c8ff00]/5 to-transparent border border-[#c8ff00]/20 p-6 md:p-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="relative rounded-2xl bg-gradient-to-r from-[#c8ff00]/10 via-[#c8ff00]/5 to-transparent border border-[#c8ff00]/20 p-6 md:p-8 text-center overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          whileHover={{ scale: 1.01 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-[#c8ff00]/5 to-transparent rounded-2xl" />
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-r from-[#c8ff00]/5 to-transparent rounded-2xl"
+            animate={{ 
+              backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+          />
           <div className="relative z-10">
-            <p className="text-sm font-semibold text-[#c8ff00] mb-2 uppercase tracking-wider">
+            <motion.p 
+              className="text-sm font-semibold text-[#c8ff00] mb-2 uppercase tracking-wider"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
               What makes us different
-            </p>
+            </motion.p>
             <h3 className="text-xl md:text-2xl font-bold mb-2">
               We're not another budgeting app
             </h3>
