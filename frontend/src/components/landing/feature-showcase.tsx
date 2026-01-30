@@ -141,9 +141,9 @@ export function FeatureShowcase({ className }: FeatureShowcaseProps) {
           <motion.div 
             className="absolute inset-0 bg-gradient-to-r from-[#c8ff00]/5 to-transparent rounded-2xl"
             animate={{ 
-              backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+              opacity: [0.3, 0.6, 0.3],
             }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           />
           <div className="relative z-10">
             <motion.p 

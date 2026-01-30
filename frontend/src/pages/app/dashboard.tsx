@@ -197,7 +197,7 @@ export default function Dashboard() {
             <CardContent className="pb-4">
               <div className="space-y-3">
                 {pots.slice(0, 3).map((pot, index) => {
-                  const percentage = (pot.currentAmount / pot.targetAmount) * 100
+                  const percentage = pot.targetAmount > 0 ? (pot.currentAmount / pot.targetAmount) * 100 : 0
                   return (
                     <motion.div 
                       key={pot.id} 
@@ -258,7 +258,7 @@ export default function Dashboard() {
             <CardContent className="pb-4">
               <div className="space-y-4">
                 {activeGoals.map((goal, index) => {
-                  const percentage = (goal.currentAmount / goal.targetAmount) * 100
+                  const percentage = goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0
                   const daysLeft = Math.ceil(
                     (new Date(goal.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
                   )
