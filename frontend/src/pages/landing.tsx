@@ -1,86 +1,93 @@
+import { useNavigate } from 'react-router'
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Check, Zap, Shield, BarChart3, Users, Star, ChevronRight } from "lucide-react"
+import { ArrowRight, Check, Star, ChevronRight, PiggyBank, Target, TrendingUp, MessageCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const features = [
     {
-        icon: Zap,
-        title: "Lightning Fast",
-        description: "Deploy in seconds, not hours. Our infrastructure scales instantly.",
+        icon: PiggyBank,
+        title: "Smart Pot System",
+        description: "Automatically allocate your income across needs, wants, savings & more.",
     },
     {
-        icon: Shield,
-        title: "Bank-Grade Security",
-        description: "End-to-end encryption with SOC2 compliance built in.",
+        icon: Target,
+        title: "Goal Tracking",
+        description: "Set financial goals with milestones and track your progress visually.",
     },
     {
-        icon: BarChart3,
-        title: "Deep Analytics",
-        description: "Real-time insights that actually move the needle.",
+        icon: TrendingUp,
+        title: "Spending Insights",
+        description: "Understand where your money goes with intelligent categorization.",
     },
     {
-        icon: Users,
-        title: "Team Collaboration",
-        description: "Built for teams of 2 or 2,000. Everyone stays in sync.",
+        icon: MessageCircle,
+        title: "AI Coach",
+        description: "Get personalized advice and see the impact of every financial decision.",
     },
 ]
 
 const testimonials = [
     {
-        quote: "Switched from legacy tools and saved 40 hours a week. Not exaggerating.",
+        quote: "Finally saved my first $10k emergency fund. The AI coach kept me accountable!",
         author: "Sarah Chen",
-        role: "CTO, Runway",
+        role: "Software Engineer",
         avatar: "SC",
     },
     {
-        quote: "The only platform that actually delivers on its promises.",
+        quote: "The pot system changed how I think about money. Budgeting actually makes sense now.",
         author: "Marcus Webb",
-        role: "Founder, Stackwise",
+        role: "Freelance Designer",
         avatar: "MW",
     },
     {
-        quote: "Our team productivity doubled in the first month.",
+        quote: "Saved for my dream vacation in 8 months. The milestone tracking kept me motivated.",
         author: "Elena Ruiz",
-        role: "VP Engineering, Lattice",
+        role: "Marketing Manager",
         avatar: "ER",
     },
 ]
 
 const pricingTiers = [
     {
-        name: "Starter",
+        name: "Free",
         price: "0",
-        description: "Perfect for side projects",
-        features: ["5 team members", "10GB storage", "Basic analytics", "Email support"],
+        description: "Get started today",
+        features: ["Unlimited pots", "3 active goals", "Basic AI insights", "Expense tracking"],
         cta: "Start Free",
         highlighted: false,
     },
     {
         name: "Pro",
-        price: "49",
-        description: "For growing teams",
-        features: ["Unlimited members", "100GB storage", "Advanced analytics", "Priority support", "Custom integrations", "API access"],
+        price: "9",
+        description: "For serious savers",
+        features: ["Unlimited goals", "Full AI coaching", "Impact analysis", "Trade-off advisor", "Priority support", "Export data"],
         cta: "Start Trial",
         highlighted: true,
     },
     {
-        name: "Enterprise",
-        price: "Custom",
-        description: "For serious scale",
-        features: ["Everything in Pro", "Unlimited storage", "Dedicated support", "SLA guarantee", "Custom contracts", "On-premise option"],
+        name: "Family",
+        price: "19",
+        description: "For households",
+        features: ["Everything in Pro", "Up to 5 members", "Shared goals", "Family insights", "Custom categories", "Dedicated coach"],
         cta: "Contact Sales",
         highlighted: false,
     },
 ]
 
 const stats = [
-    { value: "50K+", label: "Active Teams" },
-    { value: "99.9%", label: "Uptime" },
-    { value: "2.5M", label: "Tasks Completed" },
-    { value: "<100ms", label: "Response Time" },
+    { value: "50K+", label: "Active Users" },
+    { value: "$12M+", label: "Goals Achieved" },
+    { value: "89%", label: "Savings Rate" },
+    { value: "4.9/5", label: "User Rating" },
 ]
 
 function Landing() {
+    const navigate = useNavigate()
+
+    const handleGetStarted = () => {
+        navigate('/onboarding/welcome')
+    }
+
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
             {/* Grain overlay */}
@@ -95,8 +102,10 @@ function Landing() {
             <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-[#0a0a0a]/80 border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#c8ff00] rotate-45" />
-                        <span className="font-clash font-bold text-xl tracking-tight">BaoLT</span>
+                        <div className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center">
+                            <PiggyBank className="w-5 h-5 text-black" />
+                        </div>
+                        <span className="font-clash font-bold text-xl tracking-tight">MoneyPot</span>
                     </div>
                     <div className="hidden md:flex items-center gap-8 text-sm text-white/60">
                         <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -108,7 +117,7 @@ function Landing() {
                         <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/5">
                             Sign In
                         </Button>
-                        <Button className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold">
+                        <Button className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold" onClick={handleGetStarted}>
                             Get Started
                         </Button>
                     </div>
@@ -129,7 +138,7 @@ function Landing() {
                             className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-white/70 hover:border-[#c8ff00]/50 hover:bg-[#c8ff00]/5 transition-all"
                         >
                             <span className="px-2 py-0.5 rounded-full bg-[#c8ff00] text-black text-xs font-semibold">NEW</span>
-                            Introducing AI-powered workflows
+                            Introducing AI Financial Coach
                             <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                         </a>
                     </div>
@@ -140,17 +149,17 @@ function Landing() {
                             className="font-clash font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] mb-6 animate-fade-in-up"
                             style={{ animationDelay: '100ms' }}
                         >
-                            Build products
+                            Your AI-powered
                             <br />
-                            <span className="text-[#c8ff00]">10x faster</span>
+                            <span className="text-[#c8ff00]">money coach</span>
                         </h1>
 
                         <p
                             className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up"
                             style={{ animationDelay: '200ms' }}
                         >
-                            The modern platform for teams who ship. Streamline workflows,
-                            automate the boring stuff, and focus on what matters.
+                            Smart pot allocation, goal tracking, and personalized AI coaching.
+                            See the impact of every financial decision before you make it.
                         </p>
 
                         <div
@@ -160,8 +169,9 @@ function Landing() {
                             <Button
                                 size="lg"
                                 className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
+                                onClick={handleGetStarted}
                             >
-                                Start Building Free
+                                Start Free Today
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </Button>
                             <Button
@@ -169,7 +179,7 @@ function Landing() {
                                 variant="outline"
                                 className="border-white/20 text-white hover:bg-white/5 h-14 px-8 text-base"
                             >
-                                Watch Demo
+                                See How It Works
                             </Button>
                         </div>
 
@@ -188,7 +198,7 @@ function Landing() {
                                         />
                                     ))}
                                 </div>
-                                <span>50,000+ teams</span>
+                                <span>50,000+ users</span>
                             </div>
                             <div className="flex items-center gap-1">
                                 {[...Array(5)].map((_, i) => (
@@ -215,7 +225,7 @@ function Landing() {
                                 </div>
                                 <div className="flex-1 flex justify-center">
                                     <div className="px-4 py-1 rounded-md bg-white/5 text-xs text-white/40">
-                                        app.baolt.io/dashboard
+                                        app.moneypot.ai/dashboard
                                     </div>
                                 </div>
                             </div>
@@ -264,10 +274,10 @@ function Landing() {
             <section className="py-16 border-y border-white/5">
                 <div className="max-w-7xl mx-auto px-6">
                     <p className="text-center text-sm text-white/30 mb-8 uppercase tracking-widest">
-                        Trusted by industry leaders
+                        Featured in
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-40">
-                        {['Stripe', 'Vercel', 'Linear', 'Notion', 'Figma', 'Framer'].map((brand) => (
+                        {['Forbes', 'TechCrunch', 'Product Hunt', 'Bloomberg', 'CNBC', 'WSJ'].map((brand) => (
                             <span key={brand} className="font-clash font-semibold text-xl tracking-tight">
                                 {brand}
                             </span>
@@ -319,19 +329,19 @@ function Landing() {
                         <div className="md:col-span-2 md:row-span-2 relative p-8 rounded-2xl border border-white/10 bg-linear-to-br from-[#c8ff00]/10 to-transparent overflow-hidden group">
                             <div className="absolute top-0 right-0 w-75 h-75 bg-[#c8ff00]/20 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-700" />
                             <div className="relative z-10">
-                                <h3 className="font-clash font-bold text-3xl mb-4">AI-Powered Automation</h3>
+                                <h3 className="font-clash font-bold text-3xl mb-4">AI Financial Coach</h3>
                                 <p className="text-lg text-white/60 mb-8 max-w-md">
-                                    Let AI handle the repetitive work while you focus on building what matters.
+                                    Get personalized advice and see the real impact of every spending decision.
                                 </p>
                                 <div className="p-6 rounded-xl bg-black/40 backdrop-blur border border-white/10">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="w-8 h-8 rounded-lg bg-[#c8ff00] flex items-center justify-center">
-                                            <Zap className="w-4 h-4 text-black" />
+                                            <MessageCircle className="w-4 h-4 text-black" />
                                         </div>
-                                        <span className="text-sm font-medium">Workflow running...</span>
+                                        <span className="text-sm font-medium">Analyzing impact...</span>
                                     </div>
                                     <div className="space-y-2">
-                                        {['Analyzing data', 'Generating report', 'Sending notifications'].map((step, i) => (
+                                        {['Checking pot balances', 'Calculating goal impact', 'Generating recommendation'].map((step, i) => (
                                             <div key={i} className="flex items-center gap-2 text-sm text-white/40">
                                                 <Check className="w-4 h-4 text-[#c8ff00]" />
                                                 {step}
@@ -345,18 +355,18 @@ function Landing() {
                         {/* Smaller cards */}
                         <div className="p-6 rounded-2xl border border-white/10 bg-white/2">
                             <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
-                                <Shield className="w-5 h-5 text-purple-400" />
+                                <Target className="w-5 h-5 text-purple-400" />
                             </div>
-                            <h4 className="font-clash font-semibold text-lg mb-2">Enterprise Security</h4>
-                            <p className="text-sm text-white/40">SOC2 Type II certified with end-to-end encryption.</p>
+                            <h4 className="font-clash font-semibold text-lg mb-2">Visual Milestones</h4>
+                            <p className="text-sm text-white/40">Break big goals into achievable steps with progress tracking.</p>
                         </div>
 
                         <div className="p-6 rounded-2xl border border-white/10 bg-white/2">
                             <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
-                                <BarChart3 className="w-5 h-5 text-blue-400" />
+                                <PiggyBank className="w-5 h-5 text-blue-400" />
                             </div>
-                            <h4 className="font-clash font-semibold text-lg mb-2">Real-time Analytics</h4>
-                            <p className="text-sm text-white/40">Track every metric that matters to your business.</p>
+                            <h4 className="font-clash font-semibold text-lg mb-2">Smart Allocation</h4>
+                            <p className="text-sm text-white/40">Auto-distribute income across customizable money pots.</p>
                         </div>
                     </div>
                 </div>
@@ -474,16 +484,17 @@ function Landing() {
                     <div className="absolute inset-0 bg-linear-to-r from-[#c8ff00]/20 via-purple-500/20 to-[#c8ff00]/20 rounded-3xl blur-3xl" />
                     <div className="relative p-12 rounded-3xl border border-white/10 bg-[#111] text-center">
                         <h2 className="font-clash font-bold text-4xl sm:text-5xl tracking-tight mb-4">
-                            Ready to ship faster?
+                            Ready to take control?
                         </h2>
                         <p className="text-lg text-white/50 mb-8 max-w-xl mx-auto">
-                            Join 50,000+ teams already building with BaoLT.
+                            Join 50,000+ users already building wealth with MoneyPot.
                             Start free, no credit card required.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Button
                                 size="lg"
                                 className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
+                                onClick={handleGetStarted}
                             >
                                 Get Started Free
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -493,7 +504,7 @@ function Landing() {
                                 variant="ghost"
                                 className="text-white/70 hover:text-white h-14 px-8 text-base"
                             >
-                                Talk to Sales
+                                Learn More
                             </Button>
                         </div>
                     </div>
@@ -506,11 +517,13 @@ function Landing() {
                     <div className="grid md:grid-cols-5 gap-12 mb-12">
                         <div className="md:col-span-2">
                             <div className="flex items-center gap-2 mb-4">
-                                <div className="w-8 h-8 bg-[#c8ff00] rotate-45" />
-                                <span className="font-clash font-bold text-xl tracking-tight">BaoLT</span>
+                                <div className="w-8 h-8 bg-[#c8ff00] rounded-lg flex items-center justify-center">
+                                    <PiggyBank className="w-5 h-5 text-black" />
+                                </div>
+                                <span className="font-clash font-bold text-xl tracking-tight">MoneyPot</span>
                             </div>
                             <p className="text-sm text-white/40 max-w-xs">
-                                The modern platform for teams who ship. Build products faster than ever.
+                                Your AI-powered financial health coach. Smart budgeting made simple.
                             </p>
                         </div>
                         {[
@@ -534,7 +547,7 @@ function Landing() {
                     </div>
                     <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
                         <p className="text-sm text-white/30">
-                            © 2025 BaoLT. All rights reserved.
+                            © 2025 MoneyPot. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6 text-sm text-white/30">
                             <a href="#" className="hover:text-white transition-colors">Privacy</a>
