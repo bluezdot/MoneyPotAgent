@@ -50,7 +50,7 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 
 ### Key Data Flow
 
-```
+```sh
 User → Pots (salary allocation buckets by percentage)
        └→ Goals (financial targets with deadlines)
           └→ Milestones (sub-goals within goals)
@@ -84,7 +84,7 @@ Services in `app/services/` contain business logic, injected via FastAPI's `Depe
 
 Backend requires `.env` file (copy from `.env.example`):
 
-```
+```sh
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/moneypot
 OPENAI_API_KEY=sk-...
 OPIK_API_KEY=...          # Optional
@@ -95,7 +95,7 @@ CORS_ORIGINS=["http://localhost:5173"]
 ## API Endpoints
 
 | Endpoint | Purpose |
-|----------|---------|
+| -------- | ------- |
 | `POST /api/v1/chat/sessions/{id}/messages` | Send message, receive SSE stream |
 | `POST /api/v1/impact` | Analyze purchase impact on goals |
 | `/api/v1/users`, `/pots`, `/goals`, `/expenses` | Standard CRUD |
