@@ -123,26 +123,33 @@ export function NarrativeHero() {
   }
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-b from-background via-[#c8ff00]/5 to-background overflow-hidden">
-      {/* Background decoration */}
+    <section className="relative min-h-screen bg-gradient-to-b from-background via-[#c8ff00]/5 to-background overflow-hidden pt-16">
+      {/* Background decoration with improved animations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           className="absolute top-20 left-10 w-64 h-64 bg-[#c8ff00]/10 rounded-full blur-3xl"
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{
+            opacity: [0.3, 0.6, 0.3],
             scale: [1, 1.2, 1],
             x: [0, 30, 0],
+            y: [0, -10, 0],
           }}
           transition={{
             duration: 8,
             repeat: Infinity,
             ease: 'easeInOut',
+            delay: 0.5,
           }}
         />
         <motion.div
           className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{
+            opacity: [0.2, 0.5, 0.2],
             scale: [1.2, 1, 1.2],
             x: [0, -20, 0],
+            y: [0, 15, 0],
           }}
           transition={{
             duration: 10,
@@ -150,86 +157,142 @@ export function NarrativeHero() {
             ease: 'easeInOut',
           }}
         />
+        {/* Additional floating particles */}
+        <motion.div
+          className="absolute top-1/3 right-1/4 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 1,
+          }}
+        />
       </div>
 
       <div className="container max-w-6xl mx-auto px-4 py-12 md:py-20">
-        {/* Header */}
+        {/* Header with staggered animations */}
         <motion.div
           className="text-center mb-8 md:mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c8ff00]/10 border border-[#c8ff00]/20 mb-4"
-            animate={{
-              scale: [1, 1.02, 1],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ scale: 1.05, backgroundColor: 'rgba(200, 255, 0, 0.15)' }}
           >
-            <Sparkles className="w-4 h-4 text-[#c8ff00]" />
+            <motion.div
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+            >
+              <Sparkles className="w-4 h-4 text-[#c8ff00]" />
+            </motion.div>
             <span className="text-sm font-medium">Meet your AI Money Coach</span>
           </motion.div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-            <span className="inline-block">Your money,</span>{' '}
-            <span className="inline-block text-[#c8ff00]">reimagined.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <motion.h1 
+            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <motion.span 
+              className="inline-block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              Your money,
+            </motion.span>{' '}
+            <motion.span 
+              className="inline-block text-[#c8ff00]"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              reimagined.
+            </motion.span>
+          </motion.h1>
+          <motion.p 
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             Watch how Coach helps you make smarter financial decisions every day
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Comic Panel Scene */}
         <div className="relative">
-          {/* Scene container */}
+          {/* Scene container with improved entrance */}
           <motion.div
-            className="relative bg-gradient-to-br from-muted/50 to-muted border-2 border-border rounded-3xl p-6 md:p-12 min-h-[400px] md:min-h-[500px]"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative bg-gradient-to-br from-muted/50 to-muted border-2 border-border rounded-3xl p-6 md:p-12 min-h-[400px] md:min-h-[500px] shadow-2xl shadow-[#c8ff00]/5"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.7, 
+              delay: 0.7,
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
           >
             {/* Scene label */}
             <motion.div
               className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.9 }}
             >
-              <div className="px-3 py-1 rounded-full bg-[#c8ff00] text-black text-xs font-bold uppercase tracking-wider">
+              <motion.div 
+                className="px-3 py-1 rounded-full bg-[#c8ff00] text-black text-xs font-bold uppercase tracking-wider"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Scenario {currentScenario + 1}/{scenarios.length}
-              </div>
+              </motion.div>
               <span className="text-sm text-muted-foreground font-medium">
                 {scenario.title}
               </span>
             </motion.div>
 
-            {/* Characters */}
+            {/* Characters with improved animations */}
             <div className="flex items-center justify-center gap-4 md:gap-20 mb-8 md:mb-12 pt-12 md:pt-8">
               {/* User */}
               <motion.div
                 className="flex flex-col items-center"
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
+                initial={{ opacity: 0, x: -50, scale: 0.8 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ delay: 1, type: 'spring', stiffness: 200 }}
+                whileHover={{ y: -5 }}
               >
                 <Character
                   name="user"
                   emotion={scenario.steps[currentStep]?.userEmotion || 'happy'}
                   size={100}
                 />
-                <span className="text-sm font-medium text-muted-foreground">You</span>
+                <motion.span 
+                  className="text-sm font-medium text-muted-foreground mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2 }}
+                >
+                  You
+                </motion.span>
               </motion.div>
 
               {/* VS divider */}
               <motion.div
                 className="text-2xl font-bold text-muted-foreground/30"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
+                initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 1.1, type: 'spring' }}
               >
                 ✦
               </motion.div>
@@ -237,16 +300,24 @@ export function NarrativeHero() {
               {/* Coach */}
               <motion.div
                 className="flex flex-col items-center"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
+                initial={{ opacity: 0, x: 50, scale: 0.8 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ delay: 1, type: 'spring', stiffness: 200 }}
+                whileHover={{ y: -5 }}
               >
                 <Character
                   name="coach"
                   emotion={scenario.steps[currentStep]?.coachEmotion || 'happy'}
                   size={120}
                 />
-                <span className="text-sm font-medium text-[#c8ff00]">Coach</span>
+                <motion.span 
+                  className="text-sm font-medium text-[#c8ff00] mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2 }}
+                >
+                  Coach
+                </motion.span>
               </motion.div>
             </div>
 
@@ -255,10 +326,10 @@ export function NarrativeHero() {
               {showDialogue && (
                 <motion.div
                   key={`${currentScenario}-${currentStep}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                   className="max-w-lg mx-auto"
                 >
                   <DialogueBox
@@ -272,10 +343,15 @@ export function NarrativeHero() {
             </AnimatePresence>
           </motion.div>
 
-          {/* Scenario selector */}
-          <div className="flex justify-center gap-3 mt-6">
+          {/* Scenario selector with enhanced animations */}
+          <motion.div 
+            className="flex justify-center gap-3 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3 }}
+          >
             {scenarios.map((s, idx) => (
-              <button
+              <motion.button
                 key={s.id}
                 onClick={() => {
                   setCurrentScenario(idx)
@@ -283,44 +359,56 @@ export function NarrativeHero() {
                   setShowDialogue(true)
                 }}
                 className={cn(
-                  'w-12 h-1.5 rounded-full transition-all duration-300',
+                  'h-1.5 rounded-full transition-all duration-300',
                   idx === currentScenario
                     ? 'bg-[#c8ff00] w-16'
-                    : 'bg-muted-foreground/20 hover:bg-muted-foreground/40'
+                    : 'bg-muted-foreground/20 hover:bg-muted-foreground/40 w-12'
                 )}
                 aria-label={s.title}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               />
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* CTA */}
         <motion.div
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 1.4, duration: 0.5 }}
         >
-          <Button
-            size="lg"
-            onClick={handleGetStarted}
-            className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group"
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
           >
-            Start Your Journey
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-14 px-8 text-base"
-            onClick={() => {
-              setCurrentScenario((currentScenario + 1) % scenarios.length)
-              setCurrentStep(0)
-              setShowDialogue(true)
-            }}
+            <Button
+              size="lg"
+              onClick={handleGetStarted}
+              className="bg-[#c8ff00] text-black hover:bg-[#d4ff33] font-semibold h-14 px-8 text-base group shadow-lg shadow-[#c8ff00]/20"
+            >
+              Start Your Journey
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
           >
-            See More Scenarios
-          </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-14 px-8 text-base hover:bg-muted/50"
+              onClick={() => {
+                setCurrentScenario((currentScenario + 1) % scenarios.length)
+                setCurrentStep(0)
+                setShowDialogue(true)
+              }}
+            >
+              See More Scenarios
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
