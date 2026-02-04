@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { PageHeader } from '@/components/layout/page-header'
+import { PurchaseInputForm } from '@/components/coach/purchase-input-form'
 import {
   Send,
   Sparkles,
@@ -16,10 +17,12 @@ import {
   ArrowRight,
   Bot,
   User,
+  Calculator,
+  AlertCircle,
 } from 'lucide-react'
 import { useCoachStore, generateMockResponse } from '@/stores/coach-store'
 import { cn } from '@/lib/utils'
-import type { ChatMessage, ImpactAnalysis, TradeOff, QuickAction } from '@/types'
+import type { ChatMessage, ImpactAnalysis, TradeOff, QuickAction, PurchaseImpactRequest } from '@/types'
 
 const quickActionIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   PieChart,
@@ -203,8 +206,10 @@ function TypingIndicator() {
 }
 
 export default function Coach() {
-  const { messages, isTyping, quickActions, addMessage, setTyping } = useCoachStore()
+  const { messages, isTyping, quickActions, addMessage, setTyping, analyzePurchase } = useCoachStore()
   const [input, setInput] = useState('')
+  const [showPurchaseForm, setShowPurchaseForm] = useState(false)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -238,7 +243,66 @@ export default function Coach() {
     }, 1500)
   }
 
+  const handlePurchaseAnalysis = async (request: PurchaseImpactRequest) => {
+    setIsAnalyzing(true)
+
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      role: 'user',
+      content: `I want to buy ${request.description} for $${request.amount}${request.recurring ? ' (recurring monthly)' : ''}`,
+      type: 'text',
+      timestamp: new Date(),
+    }
+    addMessage(userMessage)
+
+    // Run analysis
+    setTimeout(() => {
+      const result = analyzePurchase(request)
+
+      if (result) {
+        // Convert to ImpactAnalysis format for display
+        const impactAnalysis: ImpactAnalysis = {
+          action: `Purchase: ${request.description} ($${request.amount})`,
+          potImpacts: result.potImpacts,
+          goalImpacts: result.goalImpacts,
+          recommendation: result.recommendation,
+        }
+
+        // Add AI response with impact analysis
+        const aiMessage: ChatMessage = {
+          id: `msg-${Date.now()}`,
+          role: 'assistant',
+          content: `I've analyzed the impact of your intended purchase. Here's what I found:`,
+          type: 'impact-analysis',
+          timestamp: new Date(),
+          impactAnalysis,
+        }
+        addMessage(aiMessage)
+      } else {
+        // Error message
+        const errorMessage: ChatMessage = {
+          id: `msg-${Date.now()}`,
+          role: 'assistant',
+          content: "I couldn't analyze this purchase. Please make sure you have set up your profile and pots.",
+          type: 'text',
+          timestamp: new Date(),
+        }
+        addMessage(errorMessage)
+      }
+
+      setIsAnalyzing(false)
+      setShowPurchaseForm(false)
+    }, 800)
+  }
+
   const handleQuickAction = (action: QuickAction) => {
+    // Handle purchase impact check specially
+    if (action.action === 'check-purchase') {
+      setShowPurchaseForm(true)
+      return
+    }
+
     const prompts: Record<string, string> = {
       'review-budget': 'Can you review my current budget and pot allocation?',
       'log-expense': "I'd like to log a new expense.",
@@ -297,6 +361,17 @@ export default function Coach() {
             />
           ))}
           {isTyping && <TypingIndicator />}
+
+          {/* Purchase Input Form */}
+          {showPurchaseForm && (
+            <div className="mt-4">
+              <PurchaseInputForm
+                onSubmit={handlePurchaseAnalysis}
+                onCancel={() => setShowPurchaseForm(false)}
+                isLoading={isAnalyzing}
+              />
+            </div>
+          )}
         </div>
       </ScrollArea>
 
@@ -304,22 +379,33 @@ export default function Coach() {
       <div className="border-t border-border bg-background/95 backdrop-blur px-4 py-3">
         <div className="max-w-2xl mx-auto">
           <div className="flex gap-2 pb-1 overflow-x-auto">
-              {quickActions.map((action) => {
-                const Icon = quickActionIcons[action.icon] || Lightbulb
-                return (
-                  <Button
-                    key={action.id}
-                    variant="outline"
-                    size="sm"
-                    className="shrink-0 h-8 text-xs"
-                    onClick={() => handleQuickAction(action)}
-                  >
-                    <Icon className="h-3 w-3 mr-1.5" />
-                    {action.label}
-                  </Button>
-                )
-              })}
-            </div>
+            {/* Add Purchase Check Button First */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 h-8 text-xs bg-[#c8ff00]/10 hover:bg-[#c8ff00]/20 border-[#c8ff00]/30"
+              onClick={() => setShowPurchaseForm(true)}
+            >
+              <Calculator className="h-3 w-3 mr-1.5" />
+              Check Purchase
+            </Button>
+
+            {quickActions.map((action) => {
+              const Icon = quickActionIcons[action.icon] || Lightbulb
+              return (
+                <Button
+                  key={action.id}
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0 h-8 text-xs"
+                  onClick={() => handleQuickAction(action)}
+                >
+                  <Icon className="h-3 w-3 mr-1.5" />
+                  {action.label}
+                </Button>
+              )
+            })}
+          </div>
         </div>
       </div>
 

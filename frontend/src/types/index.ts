@@ -144,6 +144,70 @@ export interface AppSettings {
   language: string
 }
 
+// Purchase Impact Analysis
+export interface PurchaseImpactRequest {
+  description: string
+  amount: number
+  category?: ExpenseCategory
+  recurring?: boolean
+  potId?: string
+}
+
+export interface PotImpact {
+  potId: string
+  potName: string
+  currentAmount: number
+  projectedAmount: number
+  change: number
+  percentageChange: number
+}
+
+export interface GoalImpact {
+  goalId: string
+  goalTitle: string
+  currentProgress: number
+  projectedProgress: number
+  delayDays: number
+  delayWeeks: number
+}
+
+export interface PurchaseImpactResult {
+  id: string
+  request: PurchaseImpactRequest
+  canAfford: boolean
+  riskLevel: 'low' | 'medium' | 'high'
+  potImpacts: PotImpact[]
+  goalImpacts: GoalImpact[]
+  recommendation: string
+  timestamp: Date
+}
+
+export interface TradeOffOption {
+  id: string
+  label: string
+  impact: string
+  recommended: boolean
+  actions?: Array<{
+    type: 'delay' | 'reduce' | 'skip' | 'substitute'
+    description: string
+  }>
+  rewards?: {
+    amount: number
+    description: string
+  }
+  commitments?: string[]
+}
+
+export interface NegotiationSession {
+  id: string
+  purchase: PurchaseImpactRequest
+  impactResult: PurchaseImpactResult
+  tradeOffs: TradeOffOption[]
+  selectedOption?: string
+  status: 'analyzing' | 'negotiating' | 'committed' | 'cancelled'
+  createdAt: Date
+}
+
 // Chart Data Types
 export interface ChartDataPoint {
   name: string
