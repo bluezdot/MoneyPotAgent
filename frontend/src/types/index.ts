@@ -1,4 +1,7 @@
 // User Profile
+export type TaxFilingStatus = 'single' | 'married-joint' | 'married-separate' | 'head-of-household'
+export type RiskAppetite = 'conservative' | 'moderate' | 'aggressive' | 'very-aggressive'
+
 export interface UserProfile {
   id: string
   name: string
@@ -6,6 +9,15 @@ export interface UserProfile {
   avatar?: string
   monthlyIncome: number
   currency: string
+
+  // Tax Information
+  taxFilingStatus?: TaxFilingStatus
+  taxBracket?: number
+  dependents?: number
+
+  // Risk Appetite
+  riskAppetite?: RiskAppetite
+
   onboardingCompleted: boolean
   createdAt: Date
 }

@@ -16,6 +16,10 @@ export const mockUser: UserProfile = {
   avatar: undefined,
   monthlyIncome: 5000,
   currency: 'USD',
+  taxFilingStatus: 'single',
+  taxBracket: 22,
+  dependents: 0,
+  riskAppetite: 'moderate',
   onboardingCompleted: true,
   createdAt: new Date('2024-01-15'),
 }

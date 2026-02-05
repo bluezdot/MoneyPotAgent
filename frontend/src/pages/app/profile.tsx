@@ -26,6 +26,8 @@ import {
   HelpCircle,
   FileText,
   Trash2,
+  TrendingUp,
+  Sparkles,
 } from 'lucide-react'
 import { useUserStore } from '@/stores/user-store'
 import { useAppStore } from '@/stores/app-store'
@@ -122,9 +124,9 @@ export default function Profile() {
                   Member since{' '}
                   {user?.createdAt
                     ? new Date(user.createdAt).toLocaleDateString('en-US', {
-                        month: 'long',
-                        year: 'numeric',
-                      })
+                      month: 'long',
+                      year: 'numeric',
+                    })
                     : 'N/A'}
                 </p>
               </div>
@@ -232,6 +234,140 @@ export default function Profile() {
           </CardContent>
         </Card>
 
+        {/* Financial Information */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Financial Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Tax Information */}
+            <div className="space-y-3">
+              <Label className="text-sm font-semibold">Tax Information</Label>
+
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Filing Status</Label>
+                <Select
+                  value={user?.taxFilingStatus || 'single'}
+                  onValueChange={(value) => updateUser({ taxFilingStatus: value as any })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select filing status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married-joint">Married Filing Jointly</SelectItem>
+                    <SelectItem value="married-separate">Married Filing Separately</SelectItem>
+                    <SelectItem value="head-of-household">Head of Household</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Tax Bracket (%)</Label>
+                  <Select
+                    value={user?.taxBracket?.toString() || '22'}
+                    onValueChange={(value) => updateUser({ taxBracket: parseInt(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10">10%</SelectItem>
+                      <SelectItem value="12">12%</SelectItem>
+                      <SelectItem value="22">22%</SelectItem>
+                      <SelectItem value="24">24%</SelectItem>
+                      <SelectItem value="32">32%</SelectItem>
+                      <SelectItem value="35">35%</SelectItem>
+                      <SelectItem value="37">37%</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Dependents</Label>
+                  <Select
+                    value={user?.dependents?.toString() || '0'}
+                    onValueChange={(value) => updateUser({ dependents: parseInt(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">0</SelectItem>
+                      <SelectItem value="1">1</SelectItem>
+                      <SelectItem value="2">2</SelectItem>
+                      <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5">5+</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Risk Appetite */}
+            <div className="space-y-3">
+              <Label className="text-sm font-semibold">Risk Appetite</Label>
+              <p className="text-xs text-muted-foreground">
+                How comfortable are you with investment risk?
+              </p>
+
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant={user?.riskAppetite === 'conservative' ? 'default' : 'outline'}
+                  className="h-auto py-3 flex-col gap-2"
+                  onClick={() => updateUser({ riskAppetite: 'conservative' })}
+                >
+                  <Shield className="h-5 w-5" />
+                  <div className="text-center">
+                    <div className="text-xs font-semibold">Conservative</div>
+                    <div className="text-[10px] text-muted-foreground">Low risk</div>
+                  </div>
+                </Button>
+
+                <Button
+                  variant={user?.riskAppetite === 'moderate' ? 'default' : 'outline'}
+                  className="h-auto py-3 flex-col gap-2"
+                  onClick={() => updateUser({ riskAppetite: 'moderate' })}
+                >
+                  <Monitor className="h-5 w-5" />
+                  <div className="text-center">
+                    <div className="text-xs font-semibold">Moderate</div>
+                    <div className="text-[10px] text-muted-foreground">Balanced</div>
+                  </div>
+                </Button>
+
+                <Button
+                  variant={user?.riskAppetite === 'aggressive' ? 'default' : 'outline'}
+                  className="h-auto py-3 flex-col gap-2"
+                  onClick={() => updateUser({ riskAppetite: 'aggressive' })}
+                >
+                  <TrendingUp className="h-5 w-5" />
+                  <div className="text-center">
+                    <div className="text-xs font-semibold">Aggressive</div>
+                    <div className="text-[10px] text-muted-foreground">High risk</div>
+                  </div>
+                </Button>
+
+                <Button
+                  variant={user?.riskAppetite === 'very-aggressive' ? 'default' : 'outline'}
+                  className="h-auto py-3 flex-col gap-2"
+                  onClick={() => updateUser({ riskAppetite: 'very-aggressive' })}
+                >
+                  <Sparkles className="h-5 w-5" />
+                  <div className="text-center">
+                    <div className="text-xs font-semibold">Very Aggressive</div>
+                    <div className="text-[10px] text-muted-foreground">Maximum risk</div>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Support */}
         <Card>
           <CardHeader className="pb-2">
@@ -242,21 +378,21 @@ export default function Profile() {
               icon={HelpCircle}
               label="Help Center"
               description="FAQs and guides"
-              onClick={() => {}}
+              onClick={() => { }}
             />
             <Separator />
             <SettingRow
               icon={FileText}
               label="Terms & Privacy"
               description="Legal information"
-              onClick={() => {}}
+              onClick={() => { }}
             />
             <Separator />
             <SettingRow
               icon={Shield}
               label="Security"
               description="Manage your security settings"
-              onClick={() => {}}
+              onClick={() => { }}
             />
           </CardContent>
         </Card>
@@ -271,7 +407,7 @@ export default function Profile() {
               icon={Trash2}
               label="Delete Account"
               description="Permanently delete your account and data"
-              onClick={() => {}}
+              onClick={() => { }}
             />
             <Separator />
             <SettingRow
