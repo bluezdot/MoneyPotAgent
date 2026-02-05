@@ -411,24 +411,24 @@ export default function Coach() {
 
       {/* Input Area */}
       <div className="border-t border-border bg-background p-4 pb-20 md:pb-4">
-        <div className="max-w-2xl mx-auto flex gap-2">
+        <form
+          className="max-w-2xl mx-auto flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleSend()
+          }}
+        >
           <Input
             ref={inputRef}
             placeholder="Ask your AI coach anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
             className="flex-1"
           />
-          <Button onClick={handleSend} disabled={!input.trim() || isTyping}>
+          <Button type="submit" disabled={!input.trim() || isTyping}>
             <Send className="h-4 w-4" />
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   )
