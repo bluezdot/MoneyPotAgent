@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { PageHeader } from '@/components/layout/page-header'
 import { PurchaseInputForm } from '@/components/coach/purchase-input-form'
+import { VoiceChatInput } from '@/components/coach/voice-chat-input'
 import {
   Send,
   Sparkles,
@@ -19,6 +20,7 @@ import {
   User,
   Calculator,
   AlertCircle,
+  Mic,
 } from 'lucide-react'
 import { useCoachStore, generateMockResponse } from '@/stores/coach-store'
 import { cn } from '@/lib/utils'
@@ -210,6 +212,7 @@ export default function Coach() {
   const [input, setInput] = useState('')
   const [showPurchaseForm, setShowPurchaseForm] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [voiceInputOpen, setVoiceInputOpen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -236,6 +239,30 @@ export default function Coach() {
     setTyping(true)
 
     // Simulate AI response delay
+    setTimeout(() => {
+      const response = generateMockResponse(userMessage.content)
+      addMessage(response)
+      setTyping(false)
+    }, 1500)
+  }
+
+  const handleVoiceTranscript = (transcript: string) => {
+    setInput(transcript)
+    inputRef.current?.focus()
+  }
+
+  const handleVoiceSendDirectly = (transcript: string) => {
+    const userMessage: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      role: 'user',
+      content: transcript,
+      type: 'text',
+      timestamp: new Date(),
+    }
+
+    addMessage(userMessage)
+    setTyping(true)
+
     setTimeout(() => {
       const response = generateMockResponse(userMessage.content)
       addMessage(response)
@@ -418,6 +445,16 @@ export default function Coach() {
             handleSend()
           }}
         >
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => setVoiceInputOpen(true)}
+            disabled={isTyping}
+            className="shrink-0"
+          >
+            <Mic className="h-4 w-4" />
+          </Button>
           <Input
             ref={inputRef}
             placeholder="Ask your AI coach anything..."
@@ -430,6 +467,14 @@ export default function Coach() {
           </Button>
         </form>
       </div>
+
+      {/* Voice Input Dialog */}
+      <VoiceChatInput
+        open={voiceInputOpen}
+        onOpenChange={setVoiceInputOpen}
+        onTranscriptReady={handleVoiceTranscript}
+        onSendDirectly={handleVoiceSendDirectly}
+      />
     </div>
   )
 }

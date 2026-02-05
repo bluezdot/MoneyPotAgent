@@ -33,10 +33,12 @@ import {
   Search,
   Calendar,
   RefreshCw,
+  Mic,
 } from 'lucide-react'
 import { useExpensesStore } from '@/stores/expenses-store'
 import { usePotsStore } from '@/stores/pots-store'
 import { expenseCategoryColors } from '@/mocks/data'
+import { VoiceInputDialog } from '@/components/expenses/voice-input-dialog'
 import { cn } from '@/lib/utils'
 import type { Expense, ExpenseCategory } from '@/types'
 
@@ -238,6 +240,7 @@ export default function Expenses() {
   const { expenses } = useExpensesStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [filterCategory, setFilterCategory] = useState<string>('all')
+  const [voiceInputOpen, setVoiceInputOpen] = useState(false)
 
   const now = new Date()
   const currentMonthExpenses = expenses.filter((e) => {
@@ -264,12 +267,53 @@ export default function Expenses() {
     .sort(([, a], [, b]) => b - a)
     .slice(0, 4)
 
+  const handleVoiceExpense = (data: { description: string; amount: number; category: ExpenseCategory }) => {
+    const { addExpense } = useExpensesStore.getState()
+    const { pots } = usePotsStore.getState()
+
+    // Auto-select pot based on category
+    const defaultPot = pots.find(p =>
+      (data.category === 'food' || data.category === 'utilities') ? p.category === 'necessities' :
+        (data.category === 'entertainment' || data.category === 'shopping') ? p.category === 'wants' :
+          p.category === 'necessities'
+    ) || pots[0]
+
+    addExpense({
+      id: `exp-${Date.now()}`,
+      description: data.description,
+      amount: data.amount,
+      category: data.category,
+      potId: defaultPot?.id || '',
+      date: new Date(),
+      recurring: false,
+    })
+  }
+
   return (
     <div className="min-h-screen">
       <PageHeader
         title="Expenses"
         subtitle="Track your spending"
-        action={<AddExpenseDialog />}
+        action={
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setVoiceInputOpen(true)}
+              className="gap-2"
+            >
+              <Mic className="h-4 w-4" />
+              <span className="hidden sm:inline">Voice</span>
+            </Button>
+            <AddExpenseDialog />
+          </div>
+        }
+      />
+
+      <VoiceInputDialog
+        open={voiceInputOpen}
+        onOpenChange={setVoiceInputOpen}
+        onExpenseDetected={handleVoiceExpense}
       />
 
       <div className="p-4 md:p-6 space-y-6">
