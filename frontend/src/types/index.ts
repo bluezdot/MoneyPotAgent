@@ -219,3 +219,31 @@ export interface TimeSeriesDataPoint {
   date: string
   amount: number
 }
+
+// Reminders & Agent Actions (Section 8)
+export type ReminderType = 'milestone' | 'missed-milestone' | 'risky-spending' | 'opportunity' | 'custom'
+export type ReminderChannel = 'in-app' | 'sms' | 'calendar' | 'email'
+export type ReminderTrigger = 'upcoming-milestone' | 'missed-milestone' | 'risky-spending' | 'opportunity' | 'manual'
+export type ReminderPriority = 'low' | 'medium' | 'high' | 'urgent'
+export type ReminderStatus = 'pending' | 'sent' | 'read' | 'dismissed' | 'actioned'
+
+export interface Reminder {
+  id: string
+  type: ReminderType
+  title: string
+  message: string
+  priority: ReminderPriority
+  status: ReminderStatus
+  channels: ReminderChannel[]
+  trigger: ReminderTrigger
+  scheduledFor: Date
+  sentAt?: Date
+  readAt?: Date
+  dismissedAt?: Date
+  relatedGoalId?: string
+  relatedMilestoneId?: string
+  relatedExpenseId?: string
+  actionUrl?: string
+  actionLabel?: string
+  createdAt: Date
+}

@@ -21,6 +21,7 @@ import Goals from '@/pages/app/goals'
 import Expenses from '@/pages/app/expenses'
 import Coach from '@/pages/app/coach'
 import Profile from '@/pages/app/profile'
+import Reminders from '@/pages/app/reminders'
 
 const queryClient = new QueryClient()
 
@@ -48,6 +49,7 @@ function App() {
           <Route path="goals" element={<Goals />} />
           <Route path="expenses" element={<Expenses />} />
           <Route path="coach" element={<Coach />} />
+          <Route path="reminders" element={<Reminders />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 
