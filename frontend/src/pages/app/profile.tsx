@@ -1,4 +1,5 @@
 import { useTheme } from 'next-themes'
+import { useNavigate } from 'react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
@@ -28,6 +29,7 @@ import {
   Trash2,
   TrendingUp,
   Sparkles,
+  Plug2,
 } from 'lucide-react'
 import { useUserStore } from '@/stores/user-store'
 import { useAppStore } from '@/stores/app-store'
@@ -82,6 +84,7 @@ export default function Profile() {
   const { user, updateUser, reset: resetUser } = useUserStore()
   const { settings, updateSettings } = useAppStore()
   const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
 
   const initials = user?.name
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase()
@@ -386,6 +389,13 @@ export default function Profile() {
               label="Terms & Privacy"
               description="Legal information"
               onClick={() => { }}
+            />
+            <Separator />
+            <SettingRow
+              icon={Plug2}
+              label="Integrations"
+              description="Email, SMS, and Calendar sync"
+              onClick={() => navigate('/app/integrations')}
             />
             <Separator />
             <SettingRow
